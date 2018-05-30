@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using appapi.Models;
+using appapi.Repository;
 
 namespace appapi
 {
@@ -24,6 +26,11 @@ namespace appapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.Configure<Settings>(options =>
+            {
+                options.databaseConnectionString = Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+            });
+            services.AddTransient<IMenuCategoryRepository, MenuCategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace appapi.Models
 {
-    public class Restaurant
+    public class MenuCategory
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Status { get; set; }
-
+        public int ParentId { get; set; }
+        public int RestaurantId { get; set; }
     }
 }
