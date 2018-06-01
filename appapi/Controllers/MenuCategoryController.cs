@@ -19,17 +19,17 @@ namespace appapi.Controllers
             _menuCategoryRepository = menuCategoryRepository;
         }
 
-        [HttpGet]
-        public IEnumerable<MenuCategory> Get()
+        [HttpGet("all")]
+        public IActionResult GetAll()
         {
-            return _menuCategoryRepository.GetAllMenuCategories();
+            return Ok(_menuCategoryRepository.GetAllMenuCategories());
         }
 
-        //// GET: MenuCategory/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        [HttpGet("detail/{id:int}")]
+        public ActionResult Details(int id)
+        {
+            return Ok(_menuCategoryRepository.GetMenuCategory(id));
+        }
 
         //// GET: MenuCategory/Create
         //public ActionResult Create()
@@ -38,21 +38,25 @@ namespace appapi.Controllers
         //}
 
         //// POST: MenuCategory/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost("create")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([FromBody] MenuCategory model)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (_menuCategoryRepository.CreateMenuCategory(model))
+                {
+                    var newUri = Url.Link("Details", new { id = model.Id });
+                    return Created(newUri, model);
+                }
+            }
+            catch
+            {
+                return View();
+            }
+            return BadRequest("Could not create menucategory");
+        }
 
         //// GET: MenuCategory/Edit/5
         //public ActionResult Edit(int id)

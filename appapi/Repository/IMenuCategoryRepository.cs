@@ -9,5 +9,7 @@ namespace appapi.Repository
     public interface IMenuCategoryRepository
     {
         IEnumerable<MenuCategory> GetAllMenuCategories();
+        MenuCategory GetMenuCategory(int id);
+        bool CreateMenuCategory(MenuCategory menuCategoryModel);
     }
 }
